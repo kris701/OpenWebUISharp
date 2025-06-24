@@ -1,4 +1,5 @@
-﻿using OpenWebUISharp.Models;
+﻿using NJsonSchema;
+using OpenWebUISharp.Models;
 using OpenWebUISharp.Models.ChatCompletions;
 using OpenWebUISharp.Models.ChatCompletions.API;
 using OpenWebUISharp.Models.Knowledgebases;
@@ -40,7 +41,7 @@ namespace OpenWebUISharp
 
 		#region ChatCompletion
 
-		public async Task<Conversation> Query(Conversation conversation, string modelId, ConversationOptions? options = null)
+		public async Task<ConversationMessage> Query(Conversation conversation, string modelId, ConversationOptions? options = null)
 		{
 			if (options == null)
 				options = new ConversationOptions();
@@ -67,8 +68,32 @@ namespace OpenWebUISharp
 				newMessage.RAGFiles = response.Sources[0].MetaData!.Select(x => new ConversationMessageRAGFile() { ID = x.ID, Name = x.Name, Score = x.Score }).ToList();
 			if (options.RemoveThinking)
 				newMessage.Message = RemoveThinking(newMessage.Message);
-			conversation.Messages.Add(newMessage);
-			return conversation;
+			return newMessage;
+		}
+
+		public async Task<T> QueryToObject<T>(Conversation conversation, string modelId, ConversationOptions? options = null) where T : notnull
+		{
+			if (options == null)
+				options = new ConversationOptions();
+			var request = new ChatCompletionRequest()
+			{
+				Model = modelId,
+				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
+				Files = options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
+				ToolIDs = options.ToolIDs,
+				Parameters = new ChatCompletionParameters()
+				{
+					Temperature = options.Temperature
+				},
+				Format = JsonSerializer.Deserialize<object>(JsonSchema.FromType<T>().ToJson())
+			};
+			var response = await _client.PostAsync<ChatCompletionRequest, ChatCompletionResponse>(request, APIURL + "/api/chat/completions");
+			if (response.Choices.Count == 0)
+				throw new Exception("Invalid response from OpenWebUI!");
+			var deserialized = JsonSerializer.Deserialize<T>(response.Choices[0].Message.Content);
+			if (deserialized == null)
+				throw new Exception("OpenWebUI did not respond with a valid JSON response!");
+			return deserialized;
 		}
 
 		private string RemoveThinking(string text)

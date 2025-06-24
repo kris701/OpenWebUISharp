@@ -14,5 +14,7 @@ namespace OpenWebUISharp.Models.ChatCompletions.API
 		public List<string> ToolIDs { get; set; }
 		[JsonPropertyName("params")]
 		public ChatCompletionParameters Parameters { get; set; }
+		[JsonPropertyName("format")]
+		public object Format { get; set; }
 	}
 }

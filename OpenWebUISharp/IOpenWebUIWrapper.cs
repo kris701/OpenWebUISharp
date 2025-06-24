@@ -12,7 +12,8 @@ namespace OpenWebUISharp
 
 		public Task<List<Model>> GetAllModels();
 
-		public Task<Conversation> Query(Conversation conversation, string modelId, ConversationOptions? options = null);
+		public Task<ConversationMessage> Query(Conversation conversation, string modelId, ConversationOptions? options = null);
+		public Task<T> QueryToObject<T>(Conversation conversation, string modelId, ConversationOptions? options = null) where T : notnull;
 
 		public Task<List<KnowledgebaseModel>> GetAllKnowledgebases();
 		public Task<KnowledgebaseModel> GetKnowledgebase(string id);
