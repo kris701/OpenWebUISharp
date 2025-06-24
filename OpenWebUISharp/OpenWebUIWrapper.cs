@@ -12,7 +12,7 @@ using System.Text.Json;
 
 namespace OpenWebUISharp
 {
-	public class OpenWebUIWrapper
+	public class OpenWebUIWrapper : IOpenWebUIWrapper
 	{
 		public string Token { get; set; }
 		public string APIURL { get; set; }
@@ -40,35 +40,7 @@ namespace OpenWebUISharp
 
 		#region ChatCompletion
 
-		public async Task<string> Query(string query, string modelId, ConversationOptions? options = null)
-		{
-			if (options == null)
-				options = new ConversationOptions();
-			var request = new ChatCompletionRequest()
-			{
-				Model = modelId,
-				Messages = new List<ChatCompletionMessage>()
-				{
-					new ChatCompletionMessage()
-					{
-						Role = "user",
-						Content = query
-					}
-				},
-				Files = options.CollectionIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
-				ToolIDs = options.ToolIDs,
-				Parameters = new ChatCompletionParameters()
-				{
-					Temperature = options.Temperature
-				}
-			};
-			var response = await _client.PostAsync<ChatCompletionRequest, ChatCompletionResponse>(request, APIURL + "/api/chat/completions");
-			if (response.Choices.Count == 0)
-				throw new Exception("Invalid response from OpenWebUI!");
-			return response.Choices[0].Message.Content;
-		}
-
-		public async Task<string> Query(Conversation conversation, string modelId, ConversationOptions? options = null)
+		public async Task<Conversation> Query(Conversation conversation, string modelId, ConversationOptions? options = null)
 		{
 			if (options == null)
 				options = new ConversationOptions();
@@ -76,7 +48,7 @@ namespace OpenWebUISharp
 			{
 				Model = modelId,
 				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
-				Files = options.CollectionIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
+				Files = options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
 				ToolIDs = options.ToolIDs,
 				Parameters = new ChatCompletionParameters()
 				{
@@ -86,7 +58,27 @@ namespace OpenWebUISharp
 			var response = await _client.PostAsync<ChatCompletionRequest, ChatCompletionResponse>(request, APIURL + "/api/chat/completions");
 			if (response.Choices.Count == 0)
 				throw new Exception("Invalid response from OpenWebUI!");
-			return response.Choices[0].Message.Content;
+			var newMessage = new ConversationMessage()
+			{
+				Role = response.Choices[0].Message.Role,
+				Message = response.Choices[0].Message.Content
+			};
+			if (response.Sources != null && response.Sources.Count > 0 && response.Sources[0].MetaData != null)
+				newMessage.RAGFiles = response.Sources[0].MetaData!.Select(x => new ConversationMessageRAGFile() { ID = x.ID, Name = x.Name, Score = x.Score }).ToList();
+			if (options.RemoveThinking)
+				newMessage.Message = RemoveThinking(newMessage.Message);
+			conversation.Messages.Add(newMessage);
+			return conversation;
+		}
+
+		private string RemoveThinking(string text)
+		{
+			var thinkStart = text.IndexOf("<think>");
+			var thinkEnd = text.IndexOf("</think>");
+
+			if (thinkStart != -1 && thinkEnd != -1 && thinkEnd > thinkStart)
+				text = text.Remove(thinkStart, thinkEnd - thinkStart + 8);
+			return text;
 		}
 
 		#endregion
@@ -161,7 +153,7 @@ namespace OpenWebUISharp
 			return file;
 		}
 
-		public static MemoryStream GenerateStreamFromString(string s)
+		private static MemoryStream GenerateStreamFromString(string s)
 		{
 			var stream = new MemoryStream();
 			var writer = new StreamWriter(stream);

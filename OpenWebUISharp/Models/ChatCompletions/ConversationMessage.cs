@@ -4,5 +4,6 @@
 	{
 		public string Role { get; set; }
 		public string Message { get; set; }
+		public List<ConversationMessageRAGFile>? RAGFiles { get; set; }
 	}
 }
