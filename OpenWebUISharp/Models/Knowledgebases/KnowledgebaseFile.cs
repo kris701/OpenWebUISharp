@@ -19,14 +19,29 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		public string Name { get; set; }
 
 		/// <summary>
+		/// Timestamp of knowledgebase file creation
+		/// </summary>
+		[JsonPropertyName("updatedat")]
+		public DateTime CreatedAt { get; set; }
+		/// <summary>
+		/// Timestamp of knowledgebase file update
+		/// </summary>
+		[JsonPropertyName("updatedat")]
+		public DateTime UpdatedAt { get; set; }
+
+		/// <summary>
 		/// Main constructor
 		/// </summary>
 		/// <param name="iD"></param>
 		/// <param name="name"></param>
-		public KnowledgebaseFile(string iD, string name)
+		/// <param name="createdAt"></param>
+		/// <param name="updatedAt"></param>
+		public KnowledgebaseFile(string iD, string name, DateTime createdAt, DateTime updatedAt)
 		{
 			ID = iD;
 			Name = name;
+			CreatedAt = createdAt;
+			UpdatedAt = updatedAt;
 		}
 	}
 }
