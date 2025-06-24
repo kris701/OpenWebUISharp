@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.Knowledgebases.API
 {
-	public class CreateKnowledgebaseFileInput
+	internal class CreateKnowledgebaseFileInput
 	{
 		[JsonPropertyName("file_id")]
 		public string FileID { get; set; }

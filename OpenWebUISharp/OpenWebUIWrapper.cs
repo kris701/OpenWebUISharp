@@ -5,6 +5,7 @@ using OpenWebUISharp.Models.Knowledgebases;
 using OpenWebUISharp.Models.Knowledgebases.API;
 using OpenWebUISharp.Models.Models;
 using OpenWebUISharp.Models.Models.API;
+using OpenWebUISharp.Models.Tools;
 using SerializableHttps;
 using SerializableHttps.AuthenticationMethods;
 using System.Text.Json;
@@ -185,7 +186,7 @@ namespace OpenWebUISharp
 
 		#region Tools
 
-
+		public async Task<List<ToolModel>> GetAllTools() => await _client.GetAsync<List<ToolModel>>(APIURL + "/api/v1/tools/");
 
 		#endregion
 	}

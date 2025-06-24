@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.ChatCompletions.API
 {
-	public class ChatCompletionParameters
+	internal class ChatCompletionParameters
 	{
 		[JsonPropertyName("temperature")]
 		public double Temperature { get; set; }

@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.Models.API
 {
-	public class GetAllModelsResponse
+	internal class GetAllModelsResponse
 	{
 		[JsonPropertyName("data")]
 		public List<Model> Data { get; set; }

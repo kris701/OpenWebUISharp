@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.Knowledgebases.API
 {
-	public class OpenWebUIFileModel
+	internal class OpenWebUIFileModel
 	{
 		[JsonPropertyName("id")]
 		public string ID { get; set; }

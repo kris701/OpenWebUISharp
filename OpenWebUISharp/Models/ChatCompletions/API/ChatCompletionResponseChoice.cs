@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.ChatCompletions.API
 {
-	public class ChatCompletionResponseChoice
+	internal class ChatCompletionResponseChoice
 	{
 		[JsonPropertyName("message")]
 		public ChatCompletionMessage Message { get; set; }

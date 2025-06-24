@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models.ChatCompletions.API
 {
-	public class ChatCompletionResponseSources
+	internal class ChatCompletionResponseSources
 	{
 		[JsonPropertyName("metadata")]
 		public List<ChatCompletionResponseSourcesMetaData>? MetaData { get; set; }
