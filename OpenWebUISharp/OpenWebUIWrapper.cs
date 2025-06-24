@@ -256,11 +256,11 @@ namespace OpenWebUISharp
 			new KnowledgebaseModel(
 				item.ID,
 				item.Name,
-				item.Files.Select(x => new KnowledgebaseFile(
+				item.Files != null ? item.Files.Select(x => new KnowledgebaseFile(
 					x.ID, 
 					x.MetaData.Name,
 					DateTimeOffset.FromUnixTimeSeconds(x.CreatedAt).UtcDateTime,
-					DateTimeOffset.FromUnixTimeSeconds(x.UpdatedAt).UtcDateTime)).ToList(),
+					DateTimeOffset.FromUnixTimeSeconds(x.UpdatedAt).UtcDateTime)).ToList() : new List<KnowledgebaseFile>(),
 				DateTimeOffset.FromUnixTimeSeconds(item.CreatedAt).UtcDateTime,
 				DateTimeOffset.FromUnixTimeSeconds(item.UpdatedAt).UtcDateTime);
 
