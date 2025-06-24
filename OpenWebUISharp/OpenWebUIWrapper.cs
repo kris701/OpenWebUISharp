@@ -256,7 +256,9 @@ namespace OpenWebUISharp
 			new KnowledgebaseModel(
 				item.ID,
 				item.Name,
-				item.Files.Select(x => new KnowledgebaseFile(x.ID, x.MetaData.Name)).ToList());
+				item.Files.Select(x => new KnowledgebaseFile(x.ID, x.MetaData.Name)).ToList(),
+				DateTimeOffset.FromUnixTimeSeconds(item.CreatedAt).UtcDateTime,
+				DateTimeOffset.FromUnixTimeSeconds(item.UpdatedAt).UtcDateTime);
 
 		#endregion
 

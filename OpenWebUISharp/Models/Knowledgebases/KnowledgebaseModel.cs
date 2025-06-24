@@ -24,16 +24,31 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		public List<KnowledgebaseFile> Files { get; set; }
 
 		/// <summary>
+		/// Timestamp of knowledgebase creation
+		/// </summary>
+		[JsonPropertyName("updatedat")]
+		public DateTime CreatedAt { get; set; }
+		/// <summary>
+		/// Timestamp of knowledgebase update
+		/// </summary>
+		[JsonPropertyName("updatedat")]
+		public DateTime UpdatedAt { get; set; }
+
+		/// <summary>
 		/// Main constructor
 		/// </summary>
 		/// <param name="iD"></param>
 		/// <param name="name"></param>
 		/// <param name="files"></param>
-		public KnowledgebaseModel(string iD, string name, List<KnowledgebaseFile> files)
+		/// <param name="createdAt"></param>
+		/// <param name="updatedAt"></param>
+		public KnowledgebaseModel(string iD, string name, List<KnowledgebaseFile> files, DateTime createdAt, DateTime updatedAt)
 		{
 			ID = iD;
 			Name = name;
 			Files = files;
+			CreatedAt = createdAt;
+			UpdatedAt = updatedAt;
 		}
 	}
 }
