@@ -11,7 +11,7 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		/// ID of the knowledgebase
 		/// </summary>
 		[JsonPropertyName("id")]
-		public string ID { get; set; }
+		public Guid ID { get; set; }
 		/// <summary>
 		/// Name of the knowledgebase
 		/// </summary>
@@ -42,7 +42,7 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		/// <param name="files"></param>
 		/// <param name="createdAt"></param>
 		/// <param name="updatedAt"></param>
-		public KnowledgebaseModel(string iD, string name, List<KnowledgebaseFile> files, DateTime createdAt, DateTime updatedAt)
+		public KnowledgebaseModel(Guid iD, string name, List<KnowledgebaseFile> files, DateTime createdAt, DateTime updatedAt)
 		{
 			ID = iD;
 			Name = name;

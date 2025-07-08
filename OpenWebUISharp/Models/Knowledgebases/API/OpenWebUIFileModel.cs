@@ -5,7 +5,7 @@ namespace OpenWebUISharp.Models.Knowledgebases.API
 	internal class OpenWebUIFileModel
 	{
 		[JsonPropertyName("id")]
-		public string ID { get; set; }
+		public Guid ID { get; set; }
 		[JsonPropertyName("created_at")]
 		public long CreatedAt { get; set; }
 		[JsonPropertyName("updated_at")]

@@ -53,7 +53,13 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="id">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public Task<KnowledgebaseModel> GetKnowledgebase(string id);
+		public Task<KnowledgebaseModel> GetKnowledgebaseByID(Guid id);
+		/// <summary>
+		/// Get a specific knowledgebase collection
+		/// </summary>
+		/// <param name="name">The unique name of the knowledgebase. If multiple knowledgebases have the same name, the first one is returned.</param>
+		/// <returns></returns>
+		public Task<KnowledgebaseModel> GetKnowledgebaseByName(string name);
 		/// <summary>
 		/// Create a new knowledgebase collection with a given name
 		/// </summary>
@@ -65,7 +71,7 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="id">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public Task DeleteKnowledgebase(string id);
+		public Task DeleteKnowledgebase(Guid id);
 		/// <summary>
 		/// Adds a new file to a knowledgebase.
 		/// </summary>
@@ -73,14 +79,14 @@ namespace OpenWebUISharp
 		/// <param name="knowledgebaseId">The unique ID of the knowledgebase</param>
 		/// <param name="fileName">A filename to associate the file with</param>
 		/// <returns></returns>
-		public Task AddFileToKnowledgebase(string text, string knowledgebaseId, string fileName);
+		public Task AddFileToKnowledgebase(string text, Guid knowledgebaseId, string fileName);
 		/// <summary>
 		/// Removes a file from a knowledgebase
 		/// </summary>
 		/// <param name="fileId">The unique ID of the file</param>
 		/// <param name="knowledgebaseId">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public Task RemoveFileFromCollection(string fileId, string knowledgebaseId);
+		public Task RemoveFileFromCollection(Guid fileId, Guid knowledgebaseId);
 
 		/// <summary>
 		/// Gets all tools

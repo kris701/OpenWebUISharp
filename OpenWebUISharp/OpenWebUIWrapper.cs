@@ -159,10 +159,24 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="id">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public async Task<KnowledgebaseModel> GetKnowledgebase(string id)
+		public async Task<KnowledgebaseModel> GetKnowledgebaseByID(Guid id)
 		{
 			var response = await _client.GetAsync<OpenWebUIKnowledgebaseModel>(APIURL + "/api/v1/knowledge/" + id);
 			return Convert(response);
+		}
+
+		/// <summary>
+		/// Get a specific knowledgebase collection
+		/// </summary>
+		/// <param name="name">The unique ID of the knowledgebase</param>
+		/// <returns></returns>
+		public async Task<KnowledgebaseModel> GetKnowledgebaseByName(string name)
+		{
+			var all = await GetAllKnowledgebases();
+			var target = all.FirstOrDefault(x => x.Name == name);
+			if (target != null)
+				return await GetKnowledgebaseByID(target.ID);
+			throw new Exception($"No knowledgebase with the name '{name}' was found!");
 		}
 
 		/// <summary>
@@ -187,9 +201,9 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="id">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public async Task DeleteKnowledgebase(string id)
+		public async Task DeleteKnowledgebase(Guid id)
 		{
-			var knowledgebase = await GetKnowledgebase(id);
+			var knowledgebase = await GetKnowledgebaseByID(id);
 			foreach (var file in knowledgebase.Files)
 				await RemoveFileFromCollection(file.ID, id);
 			await _client.DeleteAsync(APIURL + "/api/v1/knowledge/" + knowledgebase.ID + "/delete");
@@ -202,7 +216,7 @@ namespace OpenWebUISharp
 		/// <param name="knowledgebaseId">The unique ID of the knowledgebase</param>
 		/// <param name="fileName">A filename to associate the file with</param>
 		/// <returns></returns>
-		public async Task AddFileToKnowledgebase(string text, string knowledgebaseId, string fileName)
+		public async Task AddFileToKnowledgebase(string text, Guid knowledgebaseId, string fileName)
 		{
 			var file = await UploadFile(text, fileName);
 			await _client.PostAsync<CreateKnowledgebaseFileInput, EmptyModel>(
@@ -219,7 +233,7 @@ namespace OpenWebUISharp
 		/// <param name="fileId">The unique ID of the file</param>
 		/// <param name="knowledgebaseId">The unique ID of the knowledgebase</param>
 		/// <returns></returns>
-		public async Task RemoveFileFromCollection(string fileId, string knowledgebaseId)
+		public async Task RemoveFileFromCollection(Guid fileId, Guid knowledgebaseId)
 		{
 			await _client.PostAsync<CreateKnowledgebaseFileInput, EmptyModel>(
 				new CreateKnowledgebaseFileInput()

@@ -16,7 +16,7 @@ namespace OpenWebUISharp.Models.ChatCompletions
 		/// Set of knowledgebase collections the model can use
 		/// </summary>
 		[JsonPropertyName("knowledgebaseids")]
-		public List<string> KnowledgebaseIDs { get; set; } = new List<string>();
+		public List<Guid> KnowledgebaseIDs { get; set; } = new List<Guid>();
 
 		/// <summary>
 		/// Temperature to generate the response from

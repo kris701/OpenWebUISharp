@@ -5,7 +5,7 @@ namespace OpenWebUISharp.Models.Knowledgebases.API
 	internal class OpenWebUIKnowledgebaseModel
 	{
 		[JsonPropertyName("id")]
-		public string ID { get; set; }
+		public Guid ID { get; set; }
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
 		[JsonPropertyName("created_at")]
