@@ -74,8 +74,8 @@ namespace OpenWebUISharp
 			{
 				Model = modelId,
 				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
-				Files = options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
-				ToolIDs = options.ToolIDs,
+				Files = options.KnowledgebaseIDs.Count > 0 ? options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList() : null,
+				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
 				{
 					Temperature = options.Temperature
@@ -110,8 +110,8 @@ namespace OpenWebUISharp
 			{
 				Model = modelId,
 				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
-				Files = options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList(),
-				ToolIDs = options.ToolIDs,
+				Files = options.KnowledgebaseIDs.Count > 0 ? options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Legacy = true }).ToList() : null,
+				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
 				{
 					Temperature = options.Temperature

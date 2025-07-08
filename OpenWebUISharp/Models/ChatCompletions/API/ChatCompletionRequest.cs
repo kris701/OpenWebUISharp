@@ -9,12 +9,12 @@ namespace OpenWebUISharp.Models.ChatCompletions.API
 		[JsonPropertyName("messages")]
 		public List<ChatCompletionMessage> Messages { get; set; }
 		[JsonPropertyName("files")]
-		public List<ChatCompletionFile> Files { get; set; }
+		public List<ChatCompletionFile>? Files { get; set; } = null;
 		[JsonPropertyName("tool_ids")]
-		public List<string> ToolIDs { get; set; }
+		public List<string>? ToolIDs { get; set; } = null;
 		[JsonPropertyName("params")]
-		public ChatCompletionParameters Parameters { get; set; }
+		public ChatCompletionParameters? Parameters { get; set; } = null;
 		[JsonPropertyName("format")]
-		public object Format { get; set; }
+		public object? Format { get; set; } = null;
 	}
 }
