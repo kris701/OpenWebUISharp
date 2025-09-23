@@ -21,7 +21,7 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		/// <summary>
 		/// Timestamp of knowledgebase file creation
 		/// </summary>
-		[JsonPropertyName("updatedat")]
+		[JsonPropertyName("createdat")]
 		public DateTime CreatedAt { get; set; }
 		/// <summary>
 		/// Timestamp of knowledgebase file update
