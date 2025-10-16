@@ -15,17 +15,17 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var models = await wrapper.GetAllModels();
+			var models = await wrapper.Models.GetAllModels();
 			Assert.IsFalse(models.Any(x => x.Name == targetModel));
 
 			// ACT
-			var model = await wrapper.PullModel(targetModel);
+			var model = await wrapper.Models.PullModel(targetModel);
 
 			// ASSERT
-			models = await wrapper.GetAllModels();
+			models = await wrapper.Models.GetAllModels();
 			Assert.IsTrue(models.Any(x => x.Name == targetModel));
 
-			await wrapper.DeleteModelByID(model.ID);
+			await wrapper.Models.DeleteModelByID(model.ID);
 		}
 
 		[ClassCleanup]

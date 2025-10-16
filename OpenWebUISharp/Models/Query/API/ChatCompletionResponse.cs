@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OpenWebUISharp.Models.ChatCompletions.API
+namespace OpenWebUISharp.Models.Query.API
 {
 	internal class ChatCompletionResponse
 	{

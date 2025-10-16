@@ -1,6 +1,4 @@
-﻿using OpenWebUISharp.Models.ChatCompletions;
-
-namespace OpenWebUISharp.Tests
+﻿namespace OpenWebUISharp.Tests
 {
 	[TestClass]
 	public class QueryTests : BaseModelTests
@@ -12,7 +10,7 @@ namespace OpenWebUISharp.Tests
 		{
 			await DeleteAllModels();
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.PullModel(_targetModel);
+			var model = await wrapper.Models.PullModel(_targetModel);
 		}
 
 		[TestMethod]
@@ -20,10 +18,10 @@ namespace OpenWebUISharp.Tests
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.PullModel(_targetModel);
+			var model = await wrapper.Models.PullModel(_targetModel);
 
 			// ACT
-			var result = await wrapper.Query(
+			var result = await wrapper.Query.Query(
 				"hello",
 				_targetModel);
 
@@ -47,7 +45,7 @@ namespace OpenWebUISharp.Tests
 				});
 
 			// ACT
-			var result = await wrapper.Query(
+			var result = await wrapper.Query.Query(
 				conversation,
 				_targetModel);
 
@@ -63,7 +61,7 @@ namespace OpenWebUISharp.Tests
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 
 			// ACT
-			var result = await wrapper.Query(
+			var result = await wrapper.Query.Query(
 				"hello",
 				_targetModel,
 				new ConversationOptions()

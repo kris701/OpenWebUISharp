@@ -16,11 +16,11 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var tools = await wrapper.GetAllTools();
+			var tools = await wrapper.Tools.GetAllTools();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool"));
 
 			// ACT
-			var result = await wrapper.AddTool("testtool", "desc", _addToolContent);
+			var result = await wrapper.Tools.AddTool("testtool", "desc", _addToolContent);
 
 			// ASSERT
 			Assert.IsNotNull(result);
@@ -28,7 +28,7 @@
 			Assert.AreEqual("testtool", result.Name);
 			Assert.AreEqual(_addToolContent, result.Content);
 			Assert.AreEqual("desc", result.Description);
-			tools = await wrapper.GetAllTools();
+			tools = await wrapper.Tools.GetAllTools();
 			Assert.IsTrue(tools.Any(x => x.Name == "testtool"));
 		}
 
@@ -37,17 +37,17 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var tools = await wrapper.GetAllTools();
+			var tools = await wrapper.Tools.GetAllTools();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool2"));
-			var tool = await wrapper.AddTool("testtool2", "desc", _addToolContent);
-			tools = await wrapper.GetAllTools();
+			var tool = await wrapper.Tools.AddTool("testtool2", "desc", _addToolContent);
+			tools = await wrapper.Tools.GetAllTools();
 			Assert.IsTrue(tools.Any(x => x.Name == "testtool2"));
 
 			// ACT
-			await wrapper.DeleteTool(tool.ID);
+			await wrapper.Tools.DeleteTool(tool.ID);
 
 			// ASSERT
-			tools = await wrapper.GetAllTools();
+			tools = await wrapper.Tools.GetAllTools();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool2"));
 		}
 
@@ -59,7 +59,7 @@
 
 		private static async Task DeleteAllTools()
 		{
-			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
+			var wrapper = new ToolsWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 			var tools = await wrapper.GetAllTools();
 			foreach (var tool in tools)
 				await wrapper.DeleteTool(tool.ID);

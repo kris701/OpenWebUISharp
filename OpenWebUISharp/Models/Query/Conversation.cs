@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OpenWebUISharp.Models.ChatCompletions
+namespace OpenWebUISharp.Models.Query
 {
 	/// <summary>
 	/// Conversation object with a set of messages

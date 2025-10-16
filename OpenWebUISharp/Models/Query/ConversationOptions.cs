@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OpenWebUISharp.Models.ChatCompletions
+namespace OpenWebUISharp.Models.Query
 {
 	/// <summary>
 	/// Set of optional settings you can use when querying a model

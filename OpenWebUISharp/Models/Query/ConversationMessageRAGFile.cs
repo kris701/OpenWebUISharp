@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OpenWebUISharp.Models.ChatCompletions
+namespace OpenWebUISharp.Models.Query
 {
 	/// <summary>
 	/// An object representing a file that was used in generating a conversation message
