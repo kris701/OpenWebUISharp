@@ -12,7 +12,7 @@ namespace OpenWebUISharp.Tests
 		{
 			await DeleteAllModels();
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.Models.Pull(_targetModel);
+			await wrapper.Models.Pull(_targetModel);
 		}
 
 		[TestMethod]
@@ -20,7 +20,7 @@ namespace OpenWebUISharp.Tests
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.Models.Pull(_targetModel);
+			await wrapper.Models.Pull(_targetModel);
 
 			// ACT
 			var result = await wrapper.Query.Query(
@@ -77,7 +77,7 @@ namespace OpenWebUISharp.Tests
 			Assert.IsTrue(result.Message != "");
 		}
 
-		[ClassCleanup]
+		[ClassCleanup(ClassCleanupBehavior.EndOfClass)]
 		public static async Task ClassCleanup()
 		{
 			await DeleteAllModels();

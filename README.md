@@ -20,6 +20,27 @@ This is not a full wrapper of all possible API calls, just more or less the ones
 
 It is designed for OpenWebUI v0.6.33.
 
+## Usage
+There are currently four areas of OpenWebUI that this wrapper covers:
+* Querying (ChatCompletions format) [`IQueryWrapper`]
+* Knowledgebase [`IKnowledgebaseWrapper`]
+* Models [`IModelsWrapper`]
+* Tools [`IToolWrapper`]
+
+You can either use each area through its own wrapper or through the `IOpenWebUIWrapper` wrapper.
+
+## Example
+
+To query a given model (in this case `gemma3:1b`):
+```csharp
+var wrapper = new QueryWrapper("<token>", "<url>");
+var response = await wrapper.Query(
+    "How are you today?"
+    "gemma3:1b");
+```
+This will return a `ConversationMessage` model that contains the response and
+information on potential knowledgebase files used.
+
 ## Tests
 To run the tests, you need to have the following docker container running:
 

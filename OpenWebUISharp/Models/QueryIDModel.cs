@@ -2,7 +2,7 @@
 
 namespace OpenWebUISharp.Models
 {
-	public class QueryIDModel
+	internal class QueryIDModel
 	{
 		[JsonPropertyName("id")]
 		public string ID { get; set; }
