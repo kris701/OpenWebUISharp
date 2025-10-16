@@ -1,4 +1,6 @@
-﻿namespace OpenWebUISharp
+﻿using OpenWebUISharp.Models.Query;
+
+namespace OpenWebUISharp
 {
 	/// <summary>
 	/// Interface for the OpenWebUI query API

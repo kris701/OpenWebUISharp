@@ -20,18 +20,18 @@ namespace OpenWebUISharp
 		/// Get all models
 		/// </summary>
 		/// <returns></returns>
-		public Task<List<Model>> GetAllModels();
+		public Task<List<Model>> GetAll();
 		/// <summary>
 		/// Adds a model from ollama
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		public Task<Model> PullModel(string name);
+		public Task<Model> Pull(string name);
 		/// <summary>
 		/// Deletes an existing ollama model
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public Task DeleteModelByID(string id);
+		public Task DeleteByID(string id);
 	}
 }

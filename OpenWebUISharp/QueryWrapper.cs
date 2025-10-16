@@ -1,4 +1,6 @@
 ﻿using NJsonSchema;
+using OpenWebUISharp.Models.Query;
+using OpenWebUISharp.Models.Query.API;
 using SerializableHttps;
 using SerializableHttps.AuthenticationMethods;
 using System.Text.Json;

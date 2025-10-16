@@ -1,4 +1,6 @@
-﻿namespace OpenWebUISharp.Tests
+﻿using OpenWebUISharp.Models.Query;
+
+namespace OpenWebUISharp.Tests
 {
 	[TestClass]
 	public class QueryTests : BaseModelTests
@@ -10,7 +12,7 @@
 		{
 			await DeleteAllModels();
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.Models.PullModel(_targetModel);
+			var model = await wrapper.Models.Pull(_targetModel);
 		}
 
 		[TestMethod]
@@ -18,7 +20,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var model = await wrapper.Models.PullModel(_targetModel);
+			var model = await wrapper.Models.Pull(_targetModel);
 
 			// ACT
 			var result = await wrapper.Query.Query(

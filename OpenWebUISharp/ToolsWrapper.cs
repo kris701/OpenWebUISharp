@@ -44,7 +44,7 @@ namespace OpenWebUISharp
 		/// Gets all tools
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<ToolModel>> GetAllTools()
+		public async Task<List<ToolModel>> GetAll()
 		{
 			var models = await _client.GetAsync<List<OpenWebUIToolModel>>(APIURL + "/api/v1/tools/list");
 			var results = new List<ToolModel>();
@@ -64,7 +64,7 @@ namespace OpenWebUISharp
 		/// Add a tool
 		/// </summary>
 		/// <returns></returns>
-		public async Task<ToolModel> AddTool(string name, string description, string content)
+		public async Task<ToolModel> Add(string name, string description, string content)
 		{
 			var model = await _client.PostAsync<OpenWebUIToolModel, OpenWebUIToolModel>(
 				new OpenWebUIToolModel()
@@ -91,7 +91,7 @@ namespace OpenWebUISharp
 		/// Add a tool by import url
 		/// </summary>
 		/// <returns></returns>
-		public async Task<ToolModel> AddTool(string importUrl)
+		public async Task<ToolModel> Add(string importUrl)
 		{
 			var client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
@@ -109,14 +109,14 @@ namespace OpenWebUISharp
 			if (addModel == null)
 				throw new Exception("Error during tool import!");
 
-			return await AddTool(addModel.Name, addModel.Meta.Description, addModel.Content);
+			return await Add(addModel.Name, addModel.Meta.Description, addModel.Content);
 		}
 
 		/// <summary>
 		/// Deletes a tool by its ID
 		/// </summary>
 		/// <returns></returns>
-		public async Task DeleteTool(string id)
+		public async Task Delete(string id)
 		{
 			await _client.DeleteAsync(
 				APIURL + "/api/v1/tools/id/" + id + "/delete");

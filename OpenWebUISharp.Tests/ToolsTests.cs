@@ -16,11 +16,11 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var tools = await wrapper.Tools.GetAllTools();
+			var tools = await wrapper.Tools.GetAll();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool"));
 
 			// ACT
-			var result = await wrapper.Tools.AddTool("testtool", "desc", _addToolContent);
+			var result = await wrapper.Tools.Add("testtool", "desc", _addToolContent);
 
 			// ASSERT
 			Assert.IsNotNull(result);
@@ -28,7 +28,7 @@
 			Assert.AreEqual("testtool", result.Name);
 			Assert.AreEqual(_addToolContent, result.Content);
 			Assert.AreEqual("desc", result.Description);
-			tools = await wrapper.Tools.GetAllTools();
+			tools = await wrapper.Tools.GetAll();
 			Assert.IsTrue(tools.Any(x => x.Name == "testtool"));
 		}
 
@@ -37,17 +37,17 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var tools = await wrapper.Tools.GetAllTools();
+			var tools = await wrapper.Tools.GetAll();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool2"));
-			var tool = await wrapper.Tools.AddTool("testtool2", "desc", _addToolContent);
-			tools = await wrapper.Tools.GetAllTools();
+			var tool = await wrapper.Tools.Add("testtool2", "desc", _addToolContent);
+			tools = await wrapper.Tools.GetAll();
 			Assert.IsTrue(tools.Any(x => x.Name == "testtool2"));
 
 			// ACT
-			await wrapper.Tools.DeleteTool(tool.ID);
+			await wrapper.Tools.Delete(tool.ID);
 
 			// ASSERT
-			tools = await wrapper.Tools.GetAllTools();
+			tools = await wrapper.Tools.GetAll();
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool2"));
 		}
 
@@ -60,9 +60,9 @@
 		private static async Task DeleteAllTools()
 		{
 			var wrapper = new ToolsWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var tools = await wrapper.GetAllTools();
+			var tools = await wrapper.GetAll();
 			foreach (var tool in tools)
-				await wrapper.DeleteTool(tool.ID);
+				await wrapper.Delete(tool.ID);
 		}
 	}
 }

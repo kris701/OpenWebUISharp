@@ -42,7 +42,7 @@ namespace OpenWebUISharp
 		/// Get all models
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<Model>> GetAllModels()
+		public async Task<List<Model>> GetAll()
 		{
 			var result = await _client.GetAsync<GetAllModelsResponse>(APIURL + "/api/v1/models");
 			return result.Data;
@@ -53,7 +53,7 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		public async Task<Model> PullModel(string name)
+		public async Task<Model> Pull(string name)
 		{
 			await _client.PostAsync<OpenWebUIAddModel, string>(
 				new OpenWebUIAddModel()
@@ -62,7 +62,7 @@ namespace OpenWebUISharp
 				},
 				APIURL + "/ollama/api/pull");
 
-			var allModels = await GetAllModels();
+			var allModels = await GetAll();
 			var target = allModels.FirstOrDefault(x => x.ID == name);
 			if (target == null)
 				throw new Exception("Model not found!");
@@ -74,7 +74,7 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public async Task DeleteModelByID(string id)
+		public async Task DeleteByID(string id)
 		{
 			var client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);

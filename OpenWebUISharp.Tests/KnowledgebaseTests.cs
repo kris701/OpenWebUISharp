@@ -16,18 +16,18 @@
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 
 			// ACT
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("addknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("addknowledgebase");
 
 			// ASSERT
 			Assert.IsNotNull(newKnowledgebase);
-			var existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsNotNull(existing);
 			Assert.AreEqual(newKnowledgebase.ID, existing.ID);
 			Assert.AreEqual(newKnowledgebase.Name, existing.Name);
 			Assert.AreEqual(newKnowledgebase.CreatedAt, existing.CreatedAt);
 			Assert.AreEqual(newKnowledgebase.UpdatedAt, existing.UpdatedAt);
 
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 
 		[TestMethod]
@@ -35,15 +35,15 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("deleteknowledgebase");
-			var existing = await wrapper.Knowledgebase.GetAllKnowledgebases();
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("deleteknowledgebase");
+			var existing = await wrapper.Knowledgebase.GetAll();
 			Assert.IsTrue(existing.Any(x => x.ID == newKnowledgebase.ID));
 
 			// ACT
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 
 			// ASSERT
-			existing = await wrapper.Knowledgebase.GetAllKnowledgebases();
+			existing = await wrapper.Knowledgebase.GetAll();
 			Assert.IsFalse(existing.Any(x => x.ID == newKnowledgebase.ID));
 		}
 
@@ -52,10 +52,10 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("getknowledgebasebyid");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyid");
 
 			// ACT
-			var existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 
 			// ASSERT
 			Assert.IsNotNull(newKnowledgebase);
@@ -65,7 +65,7 @@
 			Assert.AreEqual(newKnowledgebase.CreatedAt, existing.CreatedAt);
 			Assert.AreEqual(newKnowledgebase.UpdatedAt, existing.UpdatedAt);
 
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 
 		[TestMethod]
@@ -73,10 +73,10 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("getknowledgebasebyname");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyname");
 
 			// ACT
-			var existing = await wrapper.Knowledgebase.GetKnowledgebaseByName(newKnowledgebase.Name);
+			var existing = await wrapper.Knowledgebase.GetByName(newKnowledgebase.Name);
 
 			// ASSERT
 			Assert.IsNotNull(newKnowledgebase);
@@ -86,7 +86,7 @@
 			Assert.AreEqual(newKnowledgebase.CreatedAt, existing.CreatedAt);
 			Assert.AreEqual(newKnowledgebase.UpdatedAt, existing.UpdatedAt);
 
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 
 		[TestMethod]
@@ -94,20 +94,20 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("addfilesknowledgebase");
-			var existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("addfilesknowledgebase");
+			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 0);
 
 			// ACT
-			await wrapper.Knowledgebase.AddFileToKnowledgebase("add file test", newKnowledgebase.ID, "add.txt");
+			await wrapper.Knowledgebase.AddFile("add file test", newKnowledgebase.ID, "add.txt");
 
 			// ASSERT
-			existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 1);
 			Assert.AreEqual("add.txt", existing.Files[0].Name);
 
-			await wrapper.Knowledgebase.RemoveFileFromCollection(existing.Files[0].ID, existing.ID);
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.DeleteFile(existing.Files[0].ID, existing.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 
 		[TestMethod]
@@ -115,21 +115,21 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.CreateKnowledgebase("removefilesknowledgebase");
-			var existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("removefilesknowledgebase");
+			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 0);
-			await wrapper.Knowledgebase.AddFileToKnowledgebase("delete file test", newKnowledgebase.ID, "delete.txt");
-			existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.AddFile("delete file test", newKnowledgebase.ID, "delete.txt");
+			existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 1);
 
 			// ACT
-			await wrapper.Knowledgebase.RemoveFileFromCollection(existing.Files[0].ID, existing.ID);
+			await wrapper.Knowledgebase.DeleteFile(existing.Files[0].ID, existing.ID);
 
 			// ASSERT
-			existing = await wrapper.Knowledgebase.GetKnowledgebaseByID(newKnowledgebase.ID);
+			existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 0);
 
-			await wrapper.Knowledgebase.DeleteKnowledgebase(newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 
 		[ClassCleanup]
@@ -141,12 +141,12 @@
 		private static async Task DeleteAllKnowledgebases()
 		{
 			var wrapper = new KnowledgebaseWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var knowledgebases = await wrapper.GetAllKnowledgebases();
+			var knowledgebases = await wrapper.GetAll();
 			foreach (var knowledgebase in knowledgebases)
 			{
 				foreach (var file in knowledgebase.Files)
-					await wrapper.RemoveFileFromCollection(file.ID, knowledgebase.ID);
-				await wrapper.DeleteKnowledgebase(knowledgebase.ID);
+					await wrapper.DeleteFile(file.ID, knowledgebase.ID);
+				await wrapper.Delete(knowledgebase.ID);
 			}
 		}
 	}
