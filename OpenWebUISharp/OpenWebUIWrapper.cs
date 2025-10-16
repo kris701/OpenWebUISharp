@@ -7,8 +7,11 @@ using OpenWebUISharp.Models.Knowledgebases.API;
 using OpenWebUISharp.Models.Models;
 using OpenWebUISharp.Models.Models.API;
 using OpenWebUISharp.Models.Tools;
+using OpenWebUISharp.Models.Tools.API;
 using SerializableHttps;
 using SerializableHttps.AuthenticationMethods;
+using System.Net.Mime;
+using System.Text;
 using System.Text.Json;
 
 namespace OpenWebUISharp
@@ -51,13 +54,72 @@ namespace OpenWebUISharp
 		/// <returns></returns>
 		public async Task<List<Model>> GetAllModels()
 		{
-			var result = await _client.GetAsync<GetAllModelsResponse>(APIURL + "/api/models");
+			var result = await _client.GetAsync<GetAllModelsResponse>(APIURL + "/api/v1/models");
 			return result.Data;
+		}
+
+		/// <summary>
+		/// Adds a model from ollama
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public async Task<Model> PullModel(string name)
+		{
+			await _client.PostAsync<OpenWebUIAddModel, string>(
+				new OpenWebUIAddModel()
+				{
+					Model = name
+				},
+				APIURL + "/ollama/api/pull");
+
+			var allModels = await GetAllModels();
+			var target = allModels.FirstOrDefault(x => x.ID == name);
+			if (target == null)
+				throw new Exception("Model not found!");
+			return target;
+		}
+
+		/// <summary>
+		/// Deletes an existing ollama model
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public async Task DeleteModelByID(string id)
+		{
+			var client = new HttpClient();
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+			await client.SendAsync(new HttpRequestMessage()
+			{
+				Method = HttpMethod.Delete,
+				RequestUri = new Uri(APIURL + "/ollama/api/delete"),
+				Content = new StringContent(
+					$"{{\"model\":\"{id}\"}}",
+					Encoding.UTF8,
+					MediaTypeNames.Application.Json)
+			});
 		}
 
 		#endregion
 
-		#region ChatCompletion
+		#region Query
+
+		/// <summary>
+		/// Query a given model with a simple text string
+		/// </summary>
+		/// <param name="text"></param>
+		/// <param name="modelId"></param>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		public async Task<ConversationMessage> Query(string text, string modelId, ConversationOptions? options = null)
+		{
+			return await Query(
+				new Conversation(new List<ConversationMessage>()
+				{
+					new ConversationMessage("user", text)
+				}),
+				modelId,
+				options);
+		}
 
 		/// <summary>
 		/// Query a given model with a conversation.
@@ -92,6 +154,25 @@ namespace OpenWebUISharp
 			if (options.RemoveThinking)
 				newMessage.Message = RemoveThinking(newMessage.Message);
 			return newMessage;
+		}
+
+		/// <summary>
+		/// Query a given model, and force it to output the response in a JSON object that can be deserialized into <typeparamref name="T"/>
+		/// </summary>
+		/// <typeparam name="T">Some non-nullable json serialisable object</typeparam>
+		/// <param name="text">Your query</param>
+		/// <param name="modelId">The ID of the model you want to use</param>
+		/// <param name="options">Optional set of options you can use.</param>
+		/// <returns></returns>
+		public async Task<T> QueryToObject<T>(string text, string modelId, ConversationOptions? options = null) where T : notnull
+		{
+			return await QueryToObject<T>(
+				new Conversation(new List<ConversationMessage>()
+				{
+					new ConversationMessage("user", text)
+				}),
+				modelId,
+				options);
 		}
 
 		/// <summary>
@@ -253,6 +334,22 @@ namespace OpenWebUISharp
 			var file = JsonSerializer.Deserialize<OpenWebUIFileModel>(await fileResponse.Content.ReadAsStringAsync());
 			if (file == null)
 				throw new Exception("OpenWebUI did not respond correctly!");
+
+			// We have to wait until openwebui have "processed" the file!
+			var fileStatus = new OpenWebUIFileStatus()
+			{
+				Data = new OpenWebUIFileStatusData()
+				{
+					Status = "?"
+				}
+			};
+			while (fileStatus.Data.Status != "completed")
+			{
+				await Task.Delay(100);
+				fileStatus = await _client.GetAsync<EmptyModel, OpenWebUIFileStatus>(
+					new EmptyModel(),
+					APIURL + "/api/v1/files/" + file.ID);
+			}
 			return file;
 		}
 
@@ -271,7 +368,7 @@ namespace OpenWebUISharp
 				item.ID,
 				item.Name,
 				item.Files != null ? item.Files.Select(x => new KnowledgebaseFile(
-					x.ID, 
+					x.ID,
 					x.MetaData.Name,
 					DateTimeOffset.FromUnixTimeSeconds(x.CreatedAt).UtcDateTime,
 					DateTimeOffset.FromUnixTimeSeconds(x.UpdatedAt).UtcDateTime)).ToList() : new List<KnowledgebaseFile>(),
@@ -286,7 +383,83 @@ namespace OpenWebUISharp
 		/// Gets all tools
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<ToolModel>> GetAllTools() => await _client.GetAsync<List<ToolModel>>(APIURL + "/api/v1/tools/");
+		public async Task<List<ToolModel>> GetAllTools()
+		{
+			var models = await _client.GetAsync<List<OpenWebUIToolModel>>(APIURL + "/api/v1/tools/list");
+			var results = new List<ToolModel>();
+			foreach (var model in models)
+				results.Add(new ToolModel()
+				{
+					ID = model.ID,
+					Name = model.Name,
+					Content = model.Content,
+					Description = model.Meta.Description
+				});
+
+			return results;
+		}
+
+		/// <summary>
+		/// Add a tool
+		/// </summary>
+		/// <returns></returns>
+		public async Task<ToolModel> AddTool(string name, string description, string content)
+		{
+			var model = await _client.PostAsync<OpenWebUIToolModel, OpenWebUIToolModel>(
+				new OpenWebUIToolModel()
+				{
+					ID = name,
+					Name = name,
+					Content = content,
+					Meta = new OpenWebUIToolMetaModel()
+					{
+						Description = description
+					}
+				},
+				APIURL + "/api/v1/tools/create");
+			return new ToolModel()
+			{
+				ID = model.ID,
+				Name = model.Name,
+				Content = content,
+				Description = model.Meta.Description
+			};
+		}
+
+		/// <summary>
+		/// Add a tool by import url
+		/// </summary>
+		/// <returns></returns>
+		public async Task<ToolModel> AddTool(string importUrl)
+		{
+			var client = new HttpClient();
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+			var importResult = await client.SendAsync(new HttpRequestMessage()
+			{
+				Method = HttpMethod.Delete,
+				RequestUri = new Uri(APIURL + "/ollama/api/delete"),
+				Content = new StringContent(
+					JsonSerializer.Serialize(new ImportToolModel() { URL = importUrl }),
+					Encoding.UTF8,
+					MediaTypeNames.Application.Json)
+			});
+			var str = await importResult.Content.ReadAsStringAsync();
+			var addModel = JsonSerializer.Deserialize<OpenWebUIToolModel>(str);
+			if (addModel == null)
+				throw new Exception("Error during tool import!");
+
+			return await AddTool(addModel.Name, addModel.Meta.Description, addModel.Content);
+		}
+
+		/// <summary>
+		/// Deletes a tool by its ID
+		/// </summary>
+		/// <returns></returns>
+		public async Task DeleteTool(string id)
+		{
+			await _client.DeleteAsync(
+				APIURL + "/api/v1/tools/id/" + id + "/delete");
+		}
 
 		#endregion
 	}

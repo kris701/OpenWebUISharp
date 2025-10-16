@@ -17,16 +17,15 @@ namespace OpenWebUISharp.Models.Tools
 		/// </summary>
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
-
 		/// <summary>
-		/// Main constructor
+		/// Content of the tool
 		/// </summary>
-		/// <param name="iD"></param>
-		/// <param name="name"></param>
-		public ToolModel(string iD, string name)
-		{
-			ID = iD;
-			Name = name;
-		}
+		[JsonPropertyName("content")]
+		public string Content { get; set; }
+		/// <summary>
+		/// Description of the tool
+		/// </summary>
+		[JsonPropertyName("description")]
+		public string Description { get; set; }
 	}
 }

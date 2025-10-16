@@ -24,7 +24,27 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <returns></returns>
 		public Task<List<Model>> GetAllModels();
+		/// <summary>
+		/// Adds a model from ollama
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		public Task<Model> PullModel(string name);
+		/// <summary>
+		/// Deletes an existing ollama model
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public Task DeleteModelByID(string id);
 
+		/// <summary>
+		/// Query a given model with a simple text string
+		/// </summary>
+		/// <param name="text"></param>
+		/// <param name="modelId"></param>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		public Task<ConversationMessage> Query(string text, string modelId, ConversationOptions? options = null);
 		/// <summary>
 		/// Query a given model with a conversation.
 		/// </summary>
@@ -33,6 +53,15 @@ namespace OpenWebUISharp
 		/// <param name="options">Optional set of options you can use.</param>
 		/// <returns></returns>
 		public Task<ConversationMessage> Query(Conversation conversation, string modelId, ConversationOptions? options = null);
+		/// <summary>
+		/// Query a given model, and force it to output the response in a JSON object that can be deserialized into <typeparamref name="T"/>
+		/// </summary>
+		/// <typeparam name="T">Some non-nullable json serialisable object</typeparam>
+		/// <param name="text">Your query</param>
+		/// <param name="modelId">The ID of the model you want to use</param>
+		/// <param name="options">Optional set of options you can use.</param>
+		/// <returns></returns>
+		public Task<T> QueryToObject<T>(string text, string modelId, ConversationOptions? options = null) where T : notnull;
 		/// <summary>
 		/// Query a given model, and force it to output the response in a JSON object that can be deserialized into <typeparamref name="T"/>
 		/// </summary>
@@ -93,5 +122,20 @@ namespace OpenWebUISharp
 		/// </summary>
 		/// <returns></returns>
 		public Task<List<ToolModel>> GetAllTools();
+		/// <summary>
+		/// Add a tool
+		/// </summary>
+		/// <returns></returns>
+		public Task<ToolModel> AddTool(string name, string description, string content);
+		/// <summary>
+		/// Add a tool by import url
+		/// </summary>
+		/// <returns></returns>
+		public Task<ToolModel> AddTool(string importUrl);
+		/// <summary>
+		/// Deletes a tool by its ID
+		/// </summary>
+		/// <returns></returns>
+		public Task DeleteTool(string id);
 	}
 }
