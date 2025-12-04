@@ -51,7 +51,7 @@
 			Assert.IsFalse(tools.Any(x => x.Name == "testtool2"));
 		}
 
-		[ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+		[ClassCleanup]
 		public static async Task ClassCleanup()
 		{
 			await DeleteAllTools();

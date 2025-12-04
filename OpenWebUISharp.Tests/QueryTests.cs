@@ -77,7 +77,7 @@ namespace OpenWebUISharp.Tests
 			Assert.IsTrue(result.Message != "");
 		}
 
-		[ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+		[ClassCleanup]
 		public static async Task ClassCleanup()
 		{
 			await DeleteAllModels();

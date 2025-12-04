@@ -28,7 +28,7 @@
 			await wrapper.Models.DeleteByID(model.ID);
 		}
 
-		[ClassCleanup(ClassCleanupBehavior.EndOfClass)]
+		[ClassCleanup]
 		public static async Task ClassCleanup()
 		{
 			await DeleteAllModels();
