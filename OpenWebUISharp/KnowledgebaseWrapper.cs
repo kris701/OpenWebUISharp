@@ -44,9 +44,9 @@ namespace OpenWebUISharp
 		/// <returns></returns>
 		public async Task<List<KnowledgebaseModel>> GetAll()
 		{
-			var response = await _client.GetAsync<List<OpenWebUIKnowledgebaseModel>>(APIURL + "/api/v1/knowledge/");
+			var response = await _client.GetAsync<GetAllKnowledgebasesOutput>(APIURL + "/api/v1/knowledge/");
 			var returnList = new List<KnowledgebaseModel>();
-			foreach (var item in response)
+			foreach (var item in response.Items)
 				returnList.Add(Convert(item));
 			return returnList;
 		}
@@ -59,6 +59,7 @@ namespace OpenWebUISharp
 		public async Task<KnowledgebaseModel> GetByID(Guid id)
 		{
 			var response = await _client.GetAsync<OpenWebUIKnowledgebaseModel>(APIURL + "/api/v1/knowledge/" + id);
+			response.Files = (await _client.GetAsync<GetAllKnowledgebaseFilesOutput>(APIURL + "/api/v1/knowledge/" + id + "/files")).Items;
 			return Convert(response);
 		}
 

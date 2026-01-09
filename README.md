@@ -18,7 +18,7 @@ This is a simple wrapper project to make a C# wrapper for some of the API calls 
 
 This is not a full wrapper of all possible API calls, just more or less the ones i use.
 
-It is designed for OpenWebUI v0.6.33.
+It is designed for OpenWebUI v0.6.43.
 
 ## Usage
 There are currently four areas of OpenWebUI that this wrapper covers:

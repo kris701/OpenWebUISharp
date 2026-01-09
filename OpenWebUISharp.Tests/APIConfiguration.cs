@@ -3,6 +3,6 @@
 	public static class APIConfiguration
 	{
 		public static string APIURL = "http://localhost:3030";
-		public static string APIKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMwMGQ1MDg3LWE5Y2MtNGQ5Yy04MGRmLTJkYTBhZjM1OTI0OSJ9.1SoCesO9gq4NPnm5j5N7L-uOQO4RE6-cymSr-yOC1Lk";
+		public static string APIKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmMjUxYTEzLTdmNWUtNDg2ZS05NGViLWVjMGM1ZTM2ZjEzNCIsImV4cCI6MTc3MDM2OTYyOCwianRpIjoiZDcyY2M2ZDEtNDhlMC00Yjk5LTgwZTAtNzI4OGUwZDk4NTczIn0.4RJskkHvctZaFpZF_778J8yJfUZSqRxn8R6slBUvErM";
 	}
 }

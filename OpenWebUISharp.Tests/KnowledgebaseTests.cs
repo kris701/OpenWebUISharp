@@ -96,14 +96,14 @@
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 			var newKnowledgebase = await wrapper.Knowledgebase.Add("addfilesknowledgebase");
 			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
-			Assert.IsTrue(existing.Files.Count == 0);
+			Assert.IsEmpty(existing.Files);
 
 			// ACT
 			await wrapper.Knowledgebase.AddFile("add file test", newKnowledgebase.ID, "add.txt");
 
 			// ASSERT
 			existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
-			Assert.IsTrue(existing.Files.Count == 1);
+			Assert.HasCount(1, existing.Files);
 			Assert.AreEqual("add.txt", existing.Files[0].Name);
 
 			await wrapper.Knowledgebase.DeleteFile(existing.Files[0].ID, existing.ID);
