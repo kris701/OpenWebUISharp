@@ -6,13 +6,14 @@ namespace OpenWebUISharp.Tests
 	public class QueryTests : BaseModelTests
 	{
 		private static readonly string _targetModel = "ben1t0/tiny-llm:latest";
+		private static readonly string _targetModel2 = "gemma3:1b";
 
 		[ClassInitialize]
 		public static async Task ClassInit(TestContext context)
 		{
-			await DeleteAllModels();
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 			await wrapper.Models.Pull(_targetModel);
+			await wrapper.Models.Pull(_targetModel2);
 		}
 
 		[TestMethod]
@@ -77,10 +78,32 @@ namespace OpenWebUISharp.Tests
 			Assert.IsTrue(result.Message != "");
 		}
 
-		[ClassCleanup]
-		public static async Task ClassCleanup()
+		[TestMethod]
+		public async Task Can_QueryModel_Options_Knowledgebase()
 		{
-			await DeleteAllModels();
+			// ARRANGE
+			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("queryknowledgebase");
+			await wrapper.Knowledgebase.AddFile("A52LG = YES", newKnowledgebase.ID, "add.txt");
+			newKnowledgebase = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
+
+			// ACT
+			var result = await wrapper.Query.Query(
+				"What does A52LG mean?",
+				_targetModel2,
+				new ConversationOptions()
+				{
+					KnowledgebaseIDs = new List<Guid>() { newKnowledgebase.ID }
+				});
+
+			// ASSERT
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result.RAGFiles);
+			Assert.AreNotEqual("", result.Message);
+			Assert.IsTrue(result.RAGFiles.Any(x => x.ID == newKnowledgebase.Files[0].ID.ToString()));
+
+			await wrapper.Knowledgebase.DeleteFile(newKnowledgebase.Files[0].ID, newKnowledgebase.ID);
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace OpenWebUISharp.Models.Query.API
 	{
 		[JsonPropertyName("id")]
 		public Guid ID { get; set; }
-		[JsonPropertyName("legacy")]
-		public bool Legacy { get; set; }
+		[JsonPropertyName("type")]
+		public string Type { get; set; }
 	}
 }
