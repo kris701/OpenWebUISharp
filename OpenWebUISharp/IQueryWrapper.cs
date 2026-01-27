@@ -8,6 +8,15 @@ namespace OpenWebUISharp
 	public interface IQueryWrapper
 	{
 		/// <summary>
+		/// The JWT token you can find in the OpenWebUI settings
+		/// </summary>
+		public string Token { get; set; }
+		/// <summary>
+		/// The URL (or IP) to OpenWebUI
+		/// </summary>
+		public string APIURL { get; set; }
+
+		/// <summary>
 		/// Query a given model with a simple text string
 		/// </summary>
 		/// <param name="text"></param>

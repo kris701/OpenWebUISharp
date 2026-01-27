@@ -8,6 +8,15 @@ namespace OpenWebUISharp
 	public interface IToolWrapper
 	{
 		/// <summary>
+		/// The JWT token you can find in the OpenWebUI settings
+		/// </summary>
+		public string Token { get; set; }
+		/// <summary>
+		/// The URL (or IP) to OpenWebUI
+		/// </summary>
+		public string APIURL { get; set; }
+
+		/// <summary>
 		/// Gets all tools
 		/// </summary>
 		/// <returns></returns>

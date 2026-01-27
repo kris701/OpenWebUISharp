@@ -30,5 +30,9 @@
 		/// API for the tools
 		/// </summary>
 		public IToolWrapper Tools { get; }
+		/// <summary>
+		/// API for users
+		/// </summary>
+		public IUsersWrapper Users { get; }
 	}
 }

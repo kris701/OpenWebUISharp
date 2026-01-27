@@ -32,6 +32,10 @@ namespace OpenWebUISharp
 		/// API for the tools
 		/// </summary>
 		public IToolWrapper Tools { get; }
+		/// <summary>
+		/// API for users
+		/// </summary>
+		public IUsersWrapper Users { get; }
 
 		private readonly SerializableHttpsClient _client;
 
@@ -48,6 +52,7 @@ namespace OpenWebUISharp
 			Models = new ModelsWrapper(token, apiUrl);
 			Query = new QueryWrapper(token, apiUrl);
 			Tools = new ToolsWrapper(token, apiUrl);
+			Users = new UsersWrapper(token, apiUrl);
 
 			_client = new SerializableHttpsClient();
 			_client.SetAuthentication(new JWTAuthenticationMethod(token));
