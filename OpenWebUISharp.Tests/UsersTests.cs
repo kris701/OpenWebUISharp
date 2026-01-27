@@ -18,7 +18,7 @@
 			Assert.IsFalse(users.Any(x => x.Name == "testuser"));
 
 			// ACT
-			var result = await wrapper.Users.Add("testuser", "test@user.com", "password");
+			var result = await wrapper.Users.Add("testuser", "test@user.com", "password", "user");
 
 			// ASSERT
 			Assert.IsNotNull(result);
@@ -36,7 +36,7 @@
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 			var users = await wrapper.Users.GetAll();
 			Assert.IsFalse(users.Any(x => x.Name == "testuser"));
-			var user = await wrapper.Users.Add("testuser", "test@user.com", "password");
+			var user = await wrapper.Users.Add("testuser", "test@user.com", "password", "user");
 			users = await wrapper.Users.GetAll();
 			Assert.IsTrue(users.Any(x => x.Name == "testuser"));
 

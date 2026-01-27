@@ -11,6 +11,6 @@ namespace OpenWebUISharp.Models.Users.API
 		[JsonPropertyName("password")]
 		public string Password { get; set; }
 		[JsonPropertyName("role")]
-		public string Role { get; set; } = "user";
+		public string Role { get; set; }
 	}
 }

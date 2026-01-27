@@ -43,15 +43,16 @@ namespace OpenWebUISharp
 		/// <param name="name"></param>
 		/// <param name="email"></param>
 		/// <param name="password"></param>
+		/// <param name="role"></param>
 		/// <returns></returns>
-		public async Task<UserModel> Add(string name, string email, string password)
+		public async Task<UserModel> Add(string name, string email, string password, string role)
 		{
 			var result = await _client.PostAsync<Models.Users.API.AddUserModel, UserModel>(new Models.Users.API.AddUserModel()
 			{
 				Name = name,
 				Email = email,
 				Password = password,
-				Role = "user"
+				Role = role
 			}, APIURL + "/api/v1/auths/add");
 			return result;
 		}

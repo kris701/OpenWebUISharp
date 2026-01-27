@@ -29,7 +29,7 @@ namespace OpenWebUISharp
 		/// <param name="email"></param>
 		/// <param name="password"></param>
 		/// <returns></returns>
-		public Task<UserModel> Add(string name, string email, string password);
+		public Task<UserModel> Add(string name, string email, string password, string role);
 
 		/// <summary>
 		/// Delete a user from the system
