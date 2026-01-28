@@ -80,6 +80,26 @@ namespace OpenWebUISharp.Tests
 		}
 
 		[TestMethod]
+		public async Task Can_QueryModel_Options_SystemPrompt()
+		{
+			// ARRANGE
+			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
+
+			// ACT
+			var result = await wrapper.Query.Query(
+				"What is the ticket id?",
+				_targetModel2,
+				new ConversationOptions()
+				{
+					SystemPrompt = "You are assisting with the ticket id 'ID33602'"
+				});
+
+			// ASSERT
+			Assert.IsNotNull(result);
+			Assert.Contains("ID33602", result.Message);
+		}
+
+		[TestMethod]
 		public async Task Can_QueryModel_Options_Knowledgebase()
 		{
 			// ARRANGE

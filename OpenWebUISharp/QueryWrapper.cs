@@ -67,10 +67,20 @@ namespace OpenWebUISharp
 		{
 			if (options == null)
 				options = new ConversationOptions();
+			var messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList();
+			if (options.SystemPrompt != null)
+			{
+				if (messages.Count == 0)
+					messages.Add(new ChatCompletionMessage() { Content = options.SystemPrompt, Role = "system" });
+				else if (messages[0].Role == "system")
+					messages[0].Content = options.SystemPrompt;
+				else
+					messages.Insert(0, new ChatCompletionMessage() { Content = options.SystemPrompt, Role = "system" });
+			}
 			var request = new ChatCompletionRequest()
 			{
 				Model = modelId,
-				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
+				Messages = messages,
 				Files = options.KnowledgebaseIDs.Count > 0 ? options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Type = "collection" }).ToList() : null,
 				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
@@ -79,6 +89,7 @@ namespace OpenWebUISharp
 					SystemPrompt = options.SystemPrompt
 				}
 			};
+			var tst = JsonSerializer.Serialize(request);
 			var response = await _client.PostAsync<ChatCompletionRequest, ChatCompletionResponse>(request, APIURL + "/api/chat/completions");
 			if (response.Choices.Count == 0)
 				throw new Exception("Invalid response from OpenWebUI!");
@@ -123,10 +134,20 @@ namespace OpenWebUISharp
 		{
 			if (options == null)
 				options = new ConversationOptions();
+			var messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList();
+			if (options.SystemPrompt != null)
+			{
+				if (messages.Count == 0)
+					messages.Add(new ChatCompletionMessage() { Content = options.SystemPrompt, Role = "system" });
+				else if (messages[0].Role == "system")
+					messages[0].Content = options.SystemPrompt;
+				else
+					messages.Insert(0, new ChatCompletionMessage() { Content = options.SystemPrompt, Role = "system" });
+			}
 			var request = new ChatCompletionRequest()
 			{
 				Model = modelId,
-				Messages = conversation.Messages.Select(x => new ChatCompletionMessage() { Content = x.Message, Role = x.Role }).ToList(),
+				Messages = messages,
 				Files = options.KnowledgebaseIDs.Count > 0 ? options.KnowledgebaseIDs.Select(x => new ChatCompletionFile() { ID = x, Type = "collection" }).ToList() : null,
 				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
