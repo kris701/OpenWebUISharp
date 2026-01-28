@@ -22,7 +22,13 @@ namespace OpenWebUISharp.Models.Query
 		/// Temperature to generate the response from
 		/// </summary>
 		[JsonPropertyName("temperature")]
-		public double Temperature { get; set; } = 1;
+		public double? Temperature { get; set; } = null;
+
+		/// <summary>
+		/// System prompt to query with
+		/// </summary>
+		[JsonPropertyName("system")]
+		public string? SystemPrompt { get; set; } = null;
 
 		/// <summary>
 		/// Some models have a "thinking" part of their response. Set this property to true to remove it.

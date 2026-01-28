@@ -130,7 +130,8 @@ namespace OpenWebUISharp
 				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
 				{
-					Temperature = options.Temperature
+					Temperature = options.Temperature,
+					SystemPrompt = options.SystemPrompt
 				},
 				Format = JsonSerializer.Deserialize<object>(JsonSchema.FromType<T>().ToJson())
 			};

@@ -70,6 +70,7 @@ namespace OpenWebUISharp.Tests
 				new ConversationOptions()
 				{
 					Temperature = 0.2,
+					SystemPrompt = "you are a helper",
 					RemoveThinking = false
 				});
 
