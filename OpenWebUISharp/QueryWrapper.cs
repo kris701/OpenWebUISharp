@@ -75,7 +75,8 @@ namespace OpenWebUISharp
 				ToolIDs = options.ToolIDs.Count > 0 ? options.ToolIDs : null,
 				Parameters = new ChatCompletionParameters()
 				{
-					Temperature = options.Temperature
+					Temperature = options.Temperature,
+					SystemPrompt = options.SystemPrompt
 				}
 			};
 			var response = await _client.PostAsync<ChatCompletionRequest, ChatCompletionResponse>(request, APIURL + "/api/chat/completions");
