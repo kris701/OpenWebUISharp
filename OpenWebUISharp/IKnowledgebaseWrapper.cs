@@ -37,8 +37,15 @@ namespace OpenWebUISharp
 		/// Create a new knowledgebase collection with a given name
 		/// </summary>
 		/// <param name="name">The name of the new knowledgebase</param>
+		/// <param name="description">The description of the new knowledgebase</param>
 		/// <returns></returns>
-		public Task<KnowledgebaseModel> Add(string name);
+		public Task<KnowledgebaseModel> Add(string name, string description);
+		/// <summary>
+		/// Updates the name and description of a knowledgebase
+		/// </summary>
+		/// <param name="knowledgebase"></param>
+		/// <returns></returns>
+		public Task<KnowledgebaseModel> Update(KnowledgebaseModel knowledgebase);
 		/// <summary>
 		/// Deletes a knowledgebase and all the files in it.
 		/// </summary>

@@ -8,6 +8,8 @@ namespace OpenWebUISharp.Models.Knowledgebases.API
 		public Guid ID { get; set; }
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
+		[JsonPropertyName("description")]
+		public string Description { get; set; }
 		[JsonPropertyName("created_at")]
 		public long CreatedAt { get; set; }
 		[JsonPropertyName("updated_at")]

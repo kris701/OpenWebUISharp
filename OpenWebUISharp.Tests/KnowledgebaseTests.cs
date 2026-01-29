@@ -1,4 +1,6 @@
-﻿namespace OpenWebUISharp.Tests
+﻿using OpenWebUISharp.Models.Knowledgebases;
+
+namespace OpenWebUISharp.Tests
 {
 	[TestClass]
 	public class KnowledgebaseTests
@@ -16,7 +18,7 @@
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
 
 			// ACT
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("addknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("addknowledgebase", "desc");
 
 			// ASSERT
 			Assert.IsNotNull(newKnowledgebase);
@@ -24,8 +26,34 @@
 			Assert.IsNotNull(existing);
 			Assert.AreEqual(newKnowledgebase.ID, existing.ID);
 			Assert.AreEqual(newKnowledgebase.Name, existing.Name);
+			Assert.AreEqual(newKnowledgebase.Description, existing.Description);
 			Assert.AreEqual(newKnowledgebase.CreatedAt, existing.CreatedAt);
 			Assert.AreEqual(newKnowledgebase.UpdatedAt, existing.UpdatedAt);
+
+			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
+		}
+
+		[TestMethod]
+		public async Task Can_UpdateKnowledgebase()
+		{
+			// ARRANGE
+			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("addknowledgebase", "desc");
+			Assert.IsNotNull(newKnowledgebase);
+
+			// ACT
+			var newKnowledgebaseCpy = new KnowledgebaseModel(newKnowledgebase);
+			newKnowledgebaseCpy.Name = "updatedknowledgebase";
+			newKnowledgebaseCpy.Description = "updated desc";
+			var updatedKnowledgebase = await wrapper.Knowledgebase.Update(newKnowledgebaseCpy);
+
+			// ASSERT
+			Assert.IsNotNull(updatedKnowledgebase);
+			Assert.AreEqual(newKnowledgebaseCpy.ID, updatedKnowledgebase.ID);
+			Assert.AreEqual(newKnowledgebaseCpy.Name, updatedKnowledgebase.Name);
+			Assert.AreEqual(newKnowledgebaseCpy.Description, updatedKnowledgebase.Description);
+			Assert.AreEqual(newKnowledgebaseCpy.CreatedAt, updatedKnowledgebase.CreatedAt);
+			Assert.AreEqual(newKnowledgebaseCpy.UpdatedAt, updatedKnowledgebase.UpdatedAt);
 
 			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);
 		}
@@ -35,7 +63,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("deleteknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("deleteknowledgebase", "desc");
 			var existing = await wrapper.Knowledgebase.GetAll();
 			Assert.IsTrue(existing.Any(x => x.ID == newKnowledgebase.ID));
 
@@ -52,7 +80,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyid");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyid", "desc");
 
 			// ACT
 			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
@@ -73,7 +101,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyname");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("getknowledgebasebyname", "desc");
 
 			// ACT
 			var existing = await wrapper.Knowledgebase.GetByName(newKnowledgebase.Name);
@@ -94,7 +122,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("addfilesknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("addfilesknowledgebase", "desc");
 			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsEmpty(existing.Files);
 
@@ -115,7 +143,7 @@
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("removefilesknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("removefilesknowledgebase", "desc");
 			var existing = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 			Assert.IsTrue(existing.Files.Count == 0);
 			await wrapper.Knowledgebase.AddFile("delete file test", newKnowledgebase.ID, "delete.txt");

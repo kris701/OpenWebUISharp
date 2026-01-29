@@ -18,6 +18,11 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
 		/// <summary>
+		/// Description of the knowledgebase
+		/// </summary>
+		[JsonPropertyName("description")]
+		public string Description { get; set; }
+		/// <summary>
 		/// Set of files that is in the knowledgebase.
 		/// </summary>
 		[JsonPropertyName("files")]
@@ -39,16 +44,32 @@ namespace OpenWebUISharp.Models.Knowledgebases
 		/// </summary>
 		/// <param name="iD"></param>
 		/// <param name="name"></param>
+		/// <param name="description"></param>
 		/// <param name="files"></param>
 		/// <param name="createdAt"></param>
 		/// <param name="updatedAt"></param>
-		public KnowledgebaseModel(Guid iD, string name, List<KnowledgebaseFile> files, DateTime createdAt, DateTime updatedAt)
+		public KnowledgebaseModel(Guid iD, string name, string description, List<KnowledgebaseFile> files, DateTime createdAt, DateTime updatedAt)
 		{
 			ID = iD;
 			Name = name;
+			Description = description;
 			Files = files;
 			CreatedAt = createdAt;
 			UpdatedAt = updatedAt;
+		}
+
+		/// <summary>
+		/// Copy constructor
+		/// </summary>
+		/// <param name="other"></param>
+		public KnowledgebaseModel(KnowledgebaseModel other)
+		{
+			ID = other.ID;
+			Name = other.Name;
+			Description = other.Description;
+			Files = other.Files;
+			CreatedAt = other.CreatedAt;
+			UpdatedAt = other.UpdatedAt;
 		}
 	}
 }

@@ -81,16 +81,35 @@ namespace OpenWebUISharp
 		/// Create a new knowledgebase collection with a given name
 		/// </summary>
 		/// <param name="name">The name of the new knowledgebase</param>
+		/// <param name="description">The description of the new knowledgebase</param>
 		/// <returns></returns>
-		public async Task<KnowledgebaseModel> Add(string name)
+		public async Task<KnowledgebaseModel> Add(string name, string description)
 		{
 			var response = await _client.PostAsync<CreateKnowledgebaseInput, OpenWebUIKnowledgebaseModel>(
 				new CreateKnowledgebaseInput()
 				{
 					Name = name,
-					Description = "New Knowledgebase!"
+					Description = description
 				},
 				APIURL + "/api/v1/knowledge/create");
+			return Convert(response);
+		}
+
+		/// <summary>
+		/// Updates the name and description of a knowledgebase
+		/// </summary>
+		/// <param name="knowledgebase"></param>
+		/// <returns></returns>
+		public async Task<KnowledgebaseModel> Update(KnowledgebaseModel knowledgebase)
+		{
+			var response = await _client.PostAsync<OpenWebUIKnowledgebaseModel, OpenWebUIKnowledgebaseModel>(
+				new OpenWebUIKnowledgebaseModel()
+				{
+					ID = knowledgebase.ID,
+					Name = knowledgebase.Name,
+					Description = knowledgebase.Description
+				},
+				APIURL + "/api/v1/knowledge/" + knowledgebase.ID + "/update");
 			return Convert(response);
 		}
 
@@ -184,6 +203,7 @@ namespace OpenWebUISharp
 			new KnowledgebaseModel(
 				item.ID,
 				item.Name,
+				item.Description,
 				item.Files != null ? item.Files.Select(x => new KnowledgebaseFile(
 					x.ID,
 					x.MetaData.Name,

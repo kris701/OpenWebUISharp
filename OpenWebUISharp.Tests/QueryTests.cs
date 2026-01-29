@@ -104,7 +104,7 @@ namespace OpenWebUISharp.Tests
 		{
 			// ARRANGE
 			var wrapper = new OpenWebUIWrapper(APIConfiguration.APIKey, APIConfiguration.APIURL);
-			var newKnowledgebase = await wrapper.Knowledgebase.Add("queryknowledgebase");
+			var newKnowledgebase = await wrapper.Knowledgebase.Add("queryknowledgebase", "desc");
 			await wrapper.Knowledgebase.AddFile("A52LG = YES", newKnowledgebase.ID, "add.txt");
 			newKnowledgebase = await wrapper.Knowledgebase.GetByID(newKnowledgebase.ID);
 
