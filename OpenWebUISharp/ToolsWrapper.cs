@@ -69,7 +69,7 @@ namespace OpenWebUISharp
 			var model = await _client.PostAsync<OpenWebUIToolModel, OpenWebUIToolModel>(
 				new OpenWebUIToolModel()
 				{
-					ID = name,
+					ID = name.ToLower().Replace(" ",""),
 					Name = name,
 					Content = content,
 					Meta = new OpenWebUIToolMetaModel()
@@ -119,7 +119,7 @@ namespace OpenWebUISharp
 		public async Task Delete(string id)
 		{
 			await _client.DeleteAsync(
-				APIURL + "/api/v1/tools/id/" + id + "/delete");
+				APIURL + "/api/v1/tools/id/" + id.ToLower().Replace(" ", "") + "/delete");
 		}
 	}
 }
