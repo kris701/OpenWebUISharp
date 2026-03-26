@@ -1,0 +1,25 @@
+name: openwebuisharp
+services:
+    open-webui:
+        ports:
+            - 3030:8080
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: all
+                          capabilities:
+                              - gpu
+        environment:
+            - ENV=dev
+        volumes:
+            - openwebuisharp-ollama:/root/.ollama
+            - openwebuisharp-open-webui:/app/backend/data
+        container_name: openwebuisharp
+        image: ghcr.io/open-webui/open-webui:ollama
+volumes:
+    openwebuisharp-ollama:
+        name: openwebuisharp-ollama
+    openwebuisharp-open-webui:
+        name: openwebuisharp-open-webui

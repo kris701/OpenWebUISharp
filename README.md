@@ -18,8 +18,6 @@ This is a simple wrapper project to make a C# wrapper for some of the API calls 
 
 This is not a full wrapper of all possible API calls, just more or less the ones i use.
 
-It is designed for OpenWebUI v0.7.2.
-
 ## Usage
 There are currently four areas of OpenWebUI that this wrapper covers:
 * Querying (ChatCompletions format) [`IQueryWrapper`]
@@ -42,8 +40,6 @@ This will return a `ConversationMessage` model that contains the response and
 information on potential knowledgebase files used.
 
 ## Tests
-To run the tests, you need to have the following docker container running:
-
-`docker run -d -p 3030:8080 --gpus=all -e ENV=dev -v ollama:/root/.ollama -v open-webui:/app/backend/data --name openwebuiharp ghcr.io/open-webui/open-webui:ollama`
+To run the tests, you need to run `docker compose up` at the root of this project
 
 And make sure you create a user in there and replace the API keys in the test files with a new valid one.
