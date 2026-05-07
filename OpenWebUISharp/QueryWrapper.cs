@@ -96,8 +96,13 @@ namespace OpenWebUISharp
 			var newMessage = new ConversationMessage(
 				response.Choices[0].Message.Role,
 				response.Choices[0].Message.Content);
-			if (response.Sources != null && response.Sources.Count > 0 && response.Sources[0].MetaData != null)
-				newMessage.RAGFiles = response.Sources[0].MetaData!.Select(x => new ConversationMessageRAGFile(x.ID, x.Name, x.Score)).ToList();
+			if (response.Sources != null && response.Sources.Count > 0 && response.Sources[0].Distances != null)
+			{
+				newMessage.RAGFiles = new List<ConversationMessageRAGFile>();
+				foreach (var source in response.Sources)
+					if (source.Distances != null && source.Distances.Count > 0 && source.MetaData != null && source.MetaData.Count > 0)
+						newMessage.RAGFiles.Add(new ConversationMessageRAGFile(source.MetaData[0].ID, source.MetaData[0].Name, source.Distances[0]));
+			}
 			if (options.RemoveThinking)
 				newMessage.Message = RemoveThinking(newMessage.Message);
 			return newMessage;

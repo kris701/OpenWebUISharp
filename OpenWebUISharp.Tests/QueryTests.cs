@@ -122,6 +122,7 @@ namespace OpenWebUISharp.Tests
 			Assert.IsNotNull(result.RAGFiles);
 			Assert.AreNotEqual("", result.Message);
 			Assert.IsTrue(result.RAGFiles.Any(x => x.ID == newKnowledgebase.Files[0].ID.ToString()));
+			Assert.IsTrue(result.RAGFiles.Any(x => x.Score != 0));
 
 			await wrapper.Knowledgebase.DeleteFile(newKnowledgebase.Files[0].ID, newKnowledgebase.ID);
 			await wrapper.Knowledgebase.Delete(newKnowledgebase.ID);

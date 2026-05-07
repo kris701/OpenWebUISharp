@@ -6,5 +6,7 @@ namespace OpenWebUISharp.Models.Query.API
 	{
 		[JsonPropertyName("metadata")]
 		public List<ChatCompletionResponseSourcesMetaData>? MetaData { get; set; }
+		[JsonPropertyName("distances")]
+		public List<double>? Distances { get; set; }
 	}
 }
