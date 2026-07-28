@@ -2,7 +2,7 @@
     <img src="https://github.com/user-attachments/assets/d94133c2-bdf1-477b-a3b7-88a62e16e538" width="200" height="200" />
 </p>
 
-[![Build and Publish](https://github.com/kris701/OpenWebUISharp/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/kris701/OpenWebUISharp/actions/workflows/dotnet-desktop.yml)
+[![Build and Publish](https://github.com/kris701/OpenWebUISharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kris701/OpenWebUISharp/actions/workflows/dotnet.yml)
 ![Nuget](https://img.shields.io/nuget/v/OpenWebUISharp)
 ![Nuget](https://img.shields.io/nuget/dt/OpenWebUISharp)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/kris701/OpenWebUISharp/main)
