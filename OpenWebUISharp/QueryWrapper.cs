@@ -36,6 +36,7 @@ namespace OpenWebUISharp
 
 			_client = new SerializableHttpsClient();
 			_client.SetAuthentication(new JWTAuthenticationMethod(token));
+			_client.TimeOut = TimeSpan.FromHours(6);
 		}
 
 		/// <summary>

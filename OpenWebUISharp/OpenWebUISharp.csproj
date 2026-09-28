@@ -15,7 +15,7 @@
 
 	<PropertyGroup>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-		<Version>0.11.0</Version>
+		<Version>0.11.1</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
