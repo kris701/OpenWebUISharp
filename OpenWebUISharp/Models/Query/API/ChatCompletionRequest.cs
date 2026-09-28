@@ -14,6 +14,10 @@ namespace OpenWebUISharp.Models.Query.API
 		public List<string>? ToolIDs { get; set; } = null;
 		[JsonPropertyName("params")]
 		public ChatCompletionParameters? Parameters { get; set; } = null;
+		[JsonPropertyName("features")]
+		public ChatCompletionFeatures? Features { get; set; } = new ChatCompletionFeatures();
+		[JsonPropertyName("background_tasks")]
+		public ChatCompletionBackgroundTasks? BackgroundTasks { get; set; } = new ChatCompletionBackgroundTasks();
 		[JsonPropertyName("format")]
 		public object? Format { get; set; } = null;
 	}

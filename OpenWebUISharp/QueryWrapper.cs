@@ -88,6 +88,15 @@ namespace OpenWebUISharp
 				{
 					Temperature = options.Temperature,
 					SystemPrompt = options.SystemPrompt
+				},
+				BackgroundTasks = new ChatCompletionBackgroundTasks(),
+				Features = new ChatCompletionFeatures()
+				{
+					CodeInterpreter = options.Features.CodeInterpreter,
+					ImageGeneration = options.Features.ImageGeneration,
+					WebSearch = options.Features.WebSearch,
+					Memory = options.Features.Memory,
+					Voice = options.Features.Voice,
 				}
 			};
 			var tst = JsonSerializer.Serialize(request);
@@ -160,6 +169,15 @@ namespace OpenWebUISharp
 				{
 					Temperature = options.Temperature,
 					SystemPrompt = options.SystemPrompt
+				},
+				BackgroundTasks = new ChatCompletionBackgroundTasks(),
+				Features = new ChatCompletionFeatures()
+				{
+					CodeInterpreter = options.Features.CodeInterpreter,
+					ImageGeneration = options.Features.ImageGeneration,
+					WebSearch = options.Features.WebSearch,
+					Memory = options.Features.Memory,
+					Voice = options.Features.Voice,
 				},
 				Format = JsonSerializer.Deserialize<object>(JsonSchema.FromType<T>().ToJson())
 			};

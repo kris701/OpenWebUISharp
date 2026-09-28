@@ -35,5 +35,11 @@ namespace OpenWebUISharp.Models.Query
 		/// </summary>
 		[JsonPropertyName("removethinking")]
 		public bool RemoveThinking { get; set; } = false;
+
+		/// <summary>
+		/// Some models have a "thinking" part of their response. Set this property to true to remove it.
+		/// </summary>
+		[JsonPropertyName("features")]
+		public ConversationFeatures Features { get; set; } = new ConversationFeatures();
 	}
 }
